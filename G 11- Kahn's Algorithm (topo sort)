@@ -1,0 +1,34 @@
+#include <bits/stdc++.h>
+vector<int> topologicalSort(vector<vector<int>> &graph, int edges, int nodes) {
+    // Kahn's Algorithm to find topological sorting of the graph
+    vector<int> adj[nodes];
+    for(auto it:graph) {
+        int u = it[0];
+        int v = it[1];
+        adj[u].push_back(v);
+    }
+    int inDegree[nodes] = {0};
+    for(int i=0;i<nodes;i++) {
+        for(auto it:adj[i]) {
+            inDegree[it]++;
+        }
+    }
+    queue<int> q;
+    for(int i=0;i<nodes;i++) {
+        if(inDegree[i]==0) {
+            q.push(i);
+        }
+    }
+    vector<int> ans;
+    while(!q.empty()) {
+        int node = q.front();
+        q.pop();
+        ans.push_back(node);
+        for(auto it:adj[node]) {
+            inDegree[it]--;
+            if(inDegree[it]==0)
+            q.push(it);
+        }
+    }
+    return ans;
+}
